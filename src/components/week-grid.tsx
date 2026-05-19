@@ -191,17 +191,20 @@ function BookingChip({
   const end = new Date(booking.endsAt);
   const durationMinutes = (end.getTime() - start.getTime()) / 60000;
   const heightUnits = Math.max(durationMinutes / 60, 1);
+  const timeRange = `${format(start, "HH:mm")}–${format(end, "HH:mm")}`;
   return (
     <button
       type="button"
       onClick={onClick}
-      className="absolute inset-x-0.5 top-0.5 z-10 overflow-hidden rounded-sm border border-red-300 bg-red-100 px-1.5 py-1 text-left text-[11px] leading-tight text-red-900 hover:bg-red-200 dark:border-red-800 dark:bg-red-950 dark:text-red-100 dark:hover:bg-red-900"
+      title={`${booking.title}\n${timeRange}\nReservado por: ${booking.name}`}
+      className="absolute inset-x-0.5 top-0.5 z-10 flex flex-col gap-0.5 overflow-hidden rounded-sm border border-red-300 bg-red-100 px-1.5 py-1 text-left text-[11px] leading-tight text-red-900 hover:bg-red-200 dark:border-red-800 dark:bg-red-950 dark:text-red-100 dark:hover:bg-red-900"
       style={{ height: `calc(${heightUnits} * 56px - 4px)` }}
     >
-      <div className="truncate font-semibold">{booking.title}</div>
-      <div className="truncate opacity-80">
-        {format(start, "HH:mm")}–{format(end, "HH:mm")} · {booking.name}
-      </div>
+      <span className="truncate font-semibold">{booking.title}</span>
+      <span className="truncate text-[10px] opacity-80">{timeRange}</span>
+      <span className="truncate text-[10px] font-medium italic text-red-800 dark:text-red-200">
+        {booking.name}
+      </span>
     </button>
   );
 }
