@@ -4,7 +4,7 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale/pt-BR";
 import { BookingItem } from "@/components/booking-item";
-import { NewBookingDialog } from "@/components/new-booking-dialog";
+import { BookingDialog } from "@/components/booking-dialog";
 
 type BookingDTO = {
   id: string;
@@ -12,6 +12,7 @@ type BookingDTO = {
   title: string;
   startsAt: string;
   endsAt: string;
+  seriesId: string | null;
 };
 
 type FreeSlotDTO = {
@@ -78,6 +79,7 @@ export function DayAgenda({ dateParam, bookings, freeSlots }: Props) {
                   title={block.data.title}
                   startsAt={block.data.startsAt}
                   endsAt={block.data.endsAt}
+                  seriesId={block.data.seriesId}
                 />
               </li>
             );
@@ -108,13 +110,17 @@ export function DayAgenda({ dateParam, bookings, freeSlots }: Props) {
         })}
       </ol>
 
-      <NewBookingDialog
-        open={dialogState.open}
-        defaultDate={dateParam}
-        defaultStartTime={dialogState.startTime}
-        defaultEndTime={dialogState.endTime}
-        onOpenChange={(open) => setDialogState((s) => ({ ...s, open }))}
-      />
+      {dialogState.open && (
+        <BookingDialog
+          mode={{
+            kind: "create",
+            defaultDate: dateParam,
+            defaultStartTime: dialogState.startTime,
+            defaultEndTime: dialogState.endTime,
+          }}
+          onClose={() => setDialogState((s) => ({ ...s, open: false }))}
+        />
+      )}
     </div>
   );
 }

@@ -14,7 +14,11 @@ model Booking {
   title     String
   startsAt  DateTime
   endsAt    DateTime
+  pinHash   String
+  seriesId  String?
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([startsAt, endsAt])
+  @@index([seriesId])
 }
